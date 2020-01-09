@@ -1,6 +1,26 @@
 ### Load the necessary libraries
 import os
+import argparse
 from openvino.inference_engine import IENetwork, IECore
+
+
+CPU_EXTENSION = "/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_sse4.so"
+
+
+def get_args():
+    '''
+    Gets the arguments from the command line.
+    '''
+    parser = argparse.ArgumentParser("Load an IR into the Inference Engine")
+    # -- Create the descriptions for the commands
+    m_desc = "The location of the model XML file"
+
+    # -- Create the arguments
+    parser.add_argument("-m", help=m_desc)
+    args = parser.parse_args()
+
+    return args
+
 
 # Then, to load the Intermediate Representation and feed it to the Inference Engine
 def load_to_IE(model_xml):
@@ -34,6 +54,16 @@ def load_to_IE(model_xml):
 
 # Note that a more optimal approach here would actually check whether a 
 # CPU extension was added as an argument by the user, but to keep things simple, I hard-coded it for the exercise.
+
+
+def main():
+    args = get_args()
+    load_to_IE(args.m)
+
+
+if __name__ == "__main__":
+    main()
+
 
 # To test
 # python feed_network.py -m /home/workspace/models/human-pose-estimation-0001.xml
