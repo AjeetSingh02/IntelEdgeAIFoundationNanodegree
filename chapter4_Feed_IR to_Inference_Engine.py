@@ -2,8 +2,7 @@
 import os
 from openvino.inference_engine import IENetwork, IECore
 
-# Then, to load the Intermediate Representation and feed it to the Inference Engine:
-
+# Then, to load the Intermediate Representation and feed it to the Inference Engine
 def load_to_IE(model_xml):
     ### Load the Inference Engine API
     plugin = IECore()
@@ -32,3 +31,9 @@ def load_to_IE(model_xml):
     print("IR successfully loaded into Inference Engine.")
 
     return
+
+# Note that a more optimal approach here would actually check whether a 
+# CPU extension was added as an argument by the user, but to keep things simple, I hard-coded it for the exercise.
+
+# To test
+# python feed_network.py -m /home/workspace/models/human-pose-estimation-0001.xml
