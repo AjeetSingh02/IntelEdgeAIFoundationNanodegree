@@ -26,6 +26,15 @@ def get_args():
 def async_inference(exec_net, input_blob, image):
     ### TODO: Add code to perform asynchronous inference
     ### Note: Return the exec_net
+    
+    exec_net.start_async(request_id=0, inputs={input_blob: image})
+    
+    while True:
+        status = exec_net.requests[0].wait(-1)
+        if status == 0:
+            break
+        else:
+            time.sleep(1)
 
     return exec_net
 
@@ -33,8 +42,10 @@ def async_inference(exec_net, input_blob, image):
 def sync_inference(exec_net, input_blob, image):
     ### TODO: Add code to perform synchronous inference
     ### Note: Return the result of inference
+    
+    result = exec_net.infer({input_blob: image})
 
-    return None
+    return result
 
 
 def perform_inference(exec_net, request_type, input_image, input_shape):
@@ -73,3 +84,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+    
+# Testing
+# python test.py
