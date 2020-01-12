@@ -29,6 +29,22 @@ def get_args():
     return args
 
 
+def assess_scene(result, counter, incident_flag):
+    '''
+    Based on the determined situation, potentially send
+    a message to the pets to break it up.
+    '''
+    if result[0][1] == 1 and not incident_flag:
+        timestamp = counter / 30
+        print("Log: Incident at {:.2f} seconds.".format(timestamp))
+        print("Break it up!")
+        incident_flag = True
+    elif result[0][1] != 1:
+        incident_flag = False
+
+    return incident_flag
+
+
 def infer_on_video(args):
     # Initialize the Inference Engine
     plugin = Network()
@@ -61,6 +77,7 @@ def infer_on_video(args):
         if plugin.wait() == 0:
             result = plugin.extract_output()
             ### TODO: Process the output
+            incident_flag = assess_scene(result, counter, incident_flag)
             
 
         # Break if escape key pressed
@@ -79,3 +96,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+# TO run:
+# python app.py -m model.xml
