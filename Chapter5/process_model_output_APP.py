@@ -56,6 +56,9 @@ def infer_on_video(args):
     # Get and open video capture
     cap = cv2.VideoCapture(args.i)
     cap.open(args.i)
+    
+    counter = 0
+    incident_flag = False
 
     # Process frames until the video ends, or process is exited
     while cap.isOpened():
